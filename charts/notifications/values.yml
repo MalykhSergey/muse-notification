@@ -14,6 +14,10 @@ kafka:
   boostrapServers: kafka.kafka.svc.cluster.local:9092
   topic: notifications
 
+service:
+  type: ClusterIP
+  port: 81
+
 postgres:
   host: notifications-postgresql.notifications.svc.cluster.local
   port: 5432
