@@ -1,0 +1,47 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_URL:localhost:5433/notifications}?stringtype=unspecified
+    username: ${DB_USER:spring}
+    password: ${DB_PASSWORD:boot}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+    show-sql: true
+  flyway:
+    locations: classpath:db/migrations
+    validate-on-migrate: true
+    out-of-order: false
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${ISSUER_URI:http://localhost:8080/realms/users-auth}
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP-SERVERS:localhost:9092}
+    notifications-topic: ${NOTIFICATIONS-TOPIC:notifications}
+    consumer:
+      group-id: ${CONSUMER_GROUP:notification-service-group}
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  messages:
+    basename: messages
+server:
+  servlet:
+    context-path: /api/notifications
+  port: ${SERVER_PORT:81}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true

@@ -1,0 +1,11 @@
+services:
+
+  postgres-notification:
+    container_name: Postgres-notification
+    image: postgres
+    environment:
+      POSTGRES_USER: spring
+      POSTGRES_PASSWORD: boot
+      POSTGRES_DB: notifications
+    ports:
+      - 5433:5432
