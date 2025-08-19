@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "muse.fullname" . }}
+  labels:
+    app: {{ include "muse.name" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "muse.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "muse.name" . }}
+    spec:
+      imagePullSecrets:
+        {{- range .Values.image.pullSecrets }}
+        - name: {{ .name }}
+        {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["mvn", "spring-boot:run"]
+          ports:
+            - containerPort: {{ .Values.service.port }}
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: muse-config
+                  key: POSTGRES_USER
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: muse-config
+                  key: POSTGRES_DB
+            - name: POSTGRES_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: muse-config
+                  key: POSTGRES_PORT
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: muse-config
+                  key: POSTGRES_HOST
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: muse-postgres-secret
+                  key: password
+            - name: DB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: muse-config
+                  key: DB_URL
+            - name: ISSUER_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: muse-config
+                  key: ISSUER_URI
+            - name: SPRING_PROFILES_ACTIVE
+              valueFrom:
+                configMapKeyRef:
+                  name: muse-config
+                  key: SPRING_PROFILE
+            - name: SPRING_KAFKA_BOOTSTRAP-SERVERS
+              valueFrom:
+                configMapKeyRef:
+                  name: muse-config
+                  key: SPRING_KAFKA_BOOTSTRAP-SERVERS
+            - name: NOTIFICATIONS-TOPIC
+              valueFrom:
+                configMapKeyRef:
+                  name: muse-config
+                  key: NOTIFICATIONS-TOPIC
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
