@@ -40,8 +40,8 @@ ingress:
   hosts:
     - host: muse.innoca.local
       paths:
-        - path: /changeme
+        - path: /api/notifications
           pathType: Prefix
           service:
             name: ""
-            port: 8080
+            port: 81
