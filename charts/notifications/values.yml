@@ -19,11 +19,11 @@ service:
   port: 81
 
 postgres:
-  host: notifications-postgresql.notifications.svc.cluster.local
+  host: notifications-pg-postgresql.notifications.svc.cluster.local
   port: 5432
-  database: muse
-  url: notifications-postgresql.notifications.svc.cluster.local:5432/notifications
-  user: spring
+  database: notifications
+  url: notifications-pg-postgresql.notifications.svc.cluster.local:5432/notifications
+  user: notifications
 
 issuer:
   uri:  http://keycloak.keycloak.svc.cluster.local:8080/realms/users-auth

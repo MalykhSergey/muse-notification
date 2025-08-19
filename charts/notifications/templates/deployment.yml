@@ -28,7 +28,7 @@ spec:
           env:
             - name: DB_USER
               valueFrom:
-                secretKeyRef:
+                configMapKeyRef:
                   name: notifications-config
                   key: DB_USER
             - name: DB_PASSWORD
@@ -46,11 +46,6 @@ spec:
                 configMapKeyRef:
                   name: notifications-config
                   key: ISSUER_URI
-            - name: SPRING_PROFILES_ACTIVE
-              valueFrom:
-                configMapKeyRef:
-                  name: notifications-config
-                  key: SPRING_PROFILE
             - name: SPRING_KAFKA_BOOTSTRAP-SERVERS
               valueFrom:
                 configMapKeyRef:
