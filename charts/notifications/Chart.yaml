@@ -1,5 +1,5 @@
 apiVersion: v2
-name: notificataions
+name: notifications
 description: A Helm chart for deploying notification service to integrate with Muse app
 type: application
 version: 0.1.0
