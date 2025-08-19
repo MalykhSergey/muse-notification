@@ -1,14 +1,14 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "muse.name" -}}
+{{- define "notifications.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end }}
 
 {{/*
 Create a default fully qualified app name.
 */}}
-{{- define "muse.fullname" -}}
+{{- define "notifications.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -24,7 +24,7 @@ Create a default fully qualified app name.
 {{/*
 Create chart label.
 */}}
-{{- define "muse.chart" -}}
+{{- define "notifications.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" }}
 {{- end }}
 

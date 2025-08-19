@@ -3,11 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ include "muse.fullname" . }}-config
 data:
-  POSTGRES_HOST: {{ .Values.postgres.host | quote }}
-  POSTGRES_PORT: {{ .Values.postgres.port | quote }}
-  POSTGRES_DB: {{ .Values.postgres.database | quote }}
-  POSTGRES_USER: {{ .Values.postgres.user | quote }}
-  SPRING_PROFILE: {{ .Values.spring.profile | quote }}
+  DB_USER: {{ .Values.postgres.user | quote }}
   DB_URL: {{ .Values.postgres.url | quote }}
   ISSUER_URI: {{ .Values.issuer.uri | quote }}
   SPRING_KAFKA_BOOTSTRAP-SERVERS: {{ .Values.kafka.boostrapServers | quote }}

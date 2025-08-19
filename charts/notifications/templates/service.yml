@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "muse.fullname" . }}
+  name: {{ include "notifications.fullname" . }}
 spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.port }}
   selector:
-    app: {{ include "muse.name" . }}
+    app: {{ include "notifications.name" . }}

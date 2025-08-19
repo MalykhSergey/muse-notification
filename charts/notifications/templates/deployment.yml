@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "muse.fullname" . }}
+  name: {{ include "notifications.fullname" . }}
   labels:
-    app: {{ include "muse.name" . }}
+    app: {{ include "notifications.name" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "muse.name" . }}
+      app: {{ include "notifications.name" . }}
   template:
     metadata:
       labels:
-        app: {{ include "muse.name" . }}
+        app: {{ include "notifications.name" . }}
     spec:
       imagePullSecrets:
         {{- range .Values.image.pullSecrets }}
@@ -26,55 +26,40 @@ spec:
           ports:
             - containerPort: {{ .Values.service.port }}
           env:
-            - name: POSTGRES_USER
-              valueFrom:
-                configMapKeyRef:
-                  name: muse-config
-                  key: POSTGRES_USER
-            - name: POSTGRES_DB
-              valueFrom:
-                configMapKeyRef:
-                  name: muse-config
-                  key: POSTGRES_DB
-            - name: POSTGRES_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: muse-config
-                  key: POSTGRES_PORT
-            - name: POSTGRES_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: muse-config
-                  key: POSTGRES_HOST
-            - name: POSTGRES_PASSWORD
+            - name: DB_USER
               valueFrom:
                 secretKeyRef:
-                  name: muse-postgres-secret
+                  name: notifications-config
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: notifications-postgres-password
                   key: password
             - name: DB_URL
               valueFrom:
                 configMapKeyRef:
-                  name: muse-config
+                  name: notifications-config
                   key: DB_URL
             - name: ISSUER_URI
               valueFrom:
                 configMapKeyRef:
-                  name: muse-config
+                  name: notifications-config
                   key: ISSUER_URI
             - name: SPRING_PROFILES_ACTIVE
               valueFrom:
                 configMapKeyRef:
-                  name: muse-config
+                  name: notifications-config
                   key: SPRING_PROFILE
             - name: SPRING_KAFKA_BOOTSTRAP-SERVERS
               valueFrom:
                 configMapKeyRef:
-                  name: muse-config
+                  name: notifications-config
                   key: SPRING_KAFKA_BOOTSTRAP-SERVERS
             - name: NOTIFICATIONS-TOPIC
               valueFrom:
                 configMapKeyRef:
-                  name: muse-config
+                  name: notifications-config
                   key: NOTIFICATIONS-TOPIC
           resources:
 {{ toYaml .Values.resources | indent 12 }}
