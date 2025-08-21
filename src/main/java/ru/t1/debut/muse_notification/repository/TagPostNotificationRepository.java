@@ -10,5 +10,5 @@ import java.util.UUID;
 @Repository
 public interface TagPostNotificationRepository extends JpaRepository<TagPostNotification, Long> {
     List<TagPostNotification> findAllByUserId(UUID id);
-
+    void deleteByIdAndUserId(Long id, UUID userId);
 }

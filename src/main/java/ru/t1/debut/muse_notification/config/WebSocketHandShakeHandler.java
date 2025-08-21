@@ -2,6 +2,7 @@ package ru.t1.debut.muse_notification.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.server.ServerHttpRequest;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -42,7 +43,7 @@ public class WebSocketHandShakeHandler extends DefaultHandshakeHandler {
             attributes.put("simpUser", auth);
             return auth;
         }
-        return null;
+        throw new AuthenticationCredentialsNotFoundException("Missing access token");
     }
 
     public static Optional<String> getQueryParam(final ServerHttpRequest request, final String paramName) {

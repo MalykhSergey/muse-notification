@@ -1,15 +1,18 @@
 package ru.t1.debut.muse_notification.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.SessionSubscribeEvent;
+import ru.t1.debut.muse_notification.dto.DeleteNotificationRequest;
 import ru.t1.debut.muse_notification.dto.NotificationDTO;
 import ru.t1.debut.muse_notification.service.DatabaseNotificationService;
 import ru.t1.debut.muse_notification.service.WebSocketNotificationService;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,6 +26,14 @@ public class NotificationController {
     public NotificationController(DatabaseNotificationService databaseNotificationService, WebSocketNotificationService webSocketNotificationService) {
         this.databaseNotificationService = databaseNotificationService;
         this.webSocketNotificationService = webSocketNotificationService;
+    }
+
+    @MessageMapping("/delete")
+    public void deleteNotification(@Valid DeleteNotificationRequest request, Principal principal) {
+        if (principal != null) {
+            UUID userId = UUID.fromString(principal.getName());
+            databaseNotificationService.deleteNotification(request.getId(), userId, request.getEventType());
+        }
     }
 
 
