@@ -1,4 +1,19 @@
 services:
+  muse-notification:
+    build: .
+    container_name: Muse-notification
+    depends_on:
+      - postgres-notification
+    environment:
+      DB_URL: postgres-notification:5432/notifications
+      ISSUER_URI: http://keycloak:8080/realms/users-auth
+      SPRING_KAFKA_BOOTSTRAP-SERVERS: broker:29092
+      NOTIFICATIONS-TOPIC: notifications
+    volumes:
+      - maven:/root/.m2
+    ports:
+      - "81:81"
+    command: mvn spring-boot:run
 
   postgres-notification:
     container_name: Postgres-notification
@@ -9,3 +24,12 @@ services:
       POSTGRES_DB: notifications
     ports:
       - 5433:5432
+
+networks:
+  default:
+    external: true
+    name: muse-network
+
+volumes:
+  maven:
+    driver: local
