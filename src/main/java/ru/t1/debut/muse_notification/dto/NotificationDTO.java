@@ -8,5 +8,5 @@ import lombok.Data;
 public class NotificationDTO {
     private Long id;
     private EventType eventType;
-    private String message;
+    private Object payload;
 }

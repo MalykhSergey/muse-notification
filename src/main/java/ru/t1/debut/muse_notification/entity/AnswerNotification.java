@@ -40,8 +40,7 @@ public class AnswerNotification {
         this.forAuthor = forAuthor;
     }
 
-    public static NotificationDTO toNotificationDTO(AnswerNotification answerNotification) {
-        String message = "Новый ответ (" + answerNotification.getAnswerId() + ") для поста: " + answerNotification.getParentId();
-        return new NotificationDTO(answerNotification.getId(), EventType.NEW_ANSWER_FOR_POST, message);
+    public NotificationDTO toNotificationDTO() {
+        return new NotificationDTO(this.getId(), EventType.NEW_ANSWER_FOR_POST, this);
     }
 }

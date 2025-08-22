@@ -40,8 +40,7 @@ public class CommentNotification {
         this.forAuthor = forAuthor;
     }
 
-    public static NotificationDTO toNotificationDTO(CommentNotification commentNotification) {
-        String message = "Новый комментария (" + commentNotification.commentId + ") для поста: " + commentNotification.getPostId();
-        return new NotificationDTO(commentNotification.getId(), EventType.NEW_POST_FOR_TAG, message);
+    public NotificationDTO toNotificationDTO() {
+        return new NotificationDTO(this.getId(), EventType.NEW_POST_FOR_TAG, this);
     }
 }

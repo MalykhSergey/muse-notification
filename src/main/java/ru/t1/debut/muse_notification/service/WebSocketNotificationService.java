@@ -23,17 +23,17 @@ public class WebSocketNotificationService implements NotificationService {
 
     @Override
     public void processCreateAnswerNotifications(List<AnswerNotification> notifications) {
-        notifications.forEach(notification -> messagingTemplate.convertAndSendToUser(notification.getUserId().toString(), "/queue/notifications", AnswerNotification.toNotificationDTO(notification)));
+        notifications.forEach(notification -> messagingTemplate.convertAndSendToUser(notification.getUserId().toString(), "/queue/notifications", notification.toNotificationDTO()));
     }
 
     @Override
     public void processCreateCommentNotifications(List<CommentNotification> notifications) {
-        notifications.forEach(notification -> messagingTemplate.convertAndSendToUser(notification.getUserId().toString(), "/queue/notifications", CommentNotification.toNotificationDTO(notification)));
+        notifications.forEach(notification -> messagingTemplate.convertAndSendToUser(notification.getUserId().toString(), "/queue/notifications", notification.toNotificationDTO()));
     }
 
     @Override
     public void processCreatePostForTagNotifications(List<TagPostNotification> notifications) {
-        notifications.forEach(notification -> messagingTemplate.convertAndSendToUser(notification.getUserId().toString(), "/queue/notifications", TagPostNotification.toNotificationDTO(notification)));
+        notifications.forEach(notification -> messagingTemplate.convertAndSendToUser(notification.getUserId().toString(), "/queue/notifications", notification.toNotificationDTO()));
     }
 
     public void sendAllToUser(String userName, List<NotificationDTO> notifications) {

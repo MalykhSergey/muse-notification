@@ -36,8 +36,7 @@ public class TagPostNotification {
         this.tagName = tagName;
     }
 
-    public static NotificationDTO toNotificationDTO(TagPostNotification tagPostNotification) {
-        String message = "Новый пост (" + tagPostNotification.postId + ") для тэга: " + tagPostNotification.getTagName();
-        return new NotificationDTO(tagPostNotification.getId(), EventType.NEW_POST_FOR_TAG, message);
+    public NotificationDTO toNotificationDTO() {
+        return new NotificationDTO(this.getId(), EventType.NEW_POST_FOR_TAG, this);
     }
 }
