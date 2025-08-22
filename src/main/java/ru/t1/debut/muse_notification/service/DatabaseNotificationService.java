@@ -84,5 +84,10 @@ public class DatabaseNotificationService implements NotificationService {
         }
     }
 
-    ;
+    @Transactional
+    public void deleteAll(UUID userId) {
+        answerNotificationRepository.deleteByUserId(userId);
+        commentNotificationRepository.deleteByUserId(userId);
+        tagPostNotificationRepository.deleteByUserId(userId);
+    }
 }

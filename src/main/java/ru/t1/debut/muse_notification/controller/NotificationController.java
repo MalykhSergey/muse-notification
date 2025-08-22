@@ -36,6 +36,14 @@ public class NotificationController {
         }
     }
 
+    @MessageMapping("/deleteAll")
+    public void deleteNotification(Principal principal) {
+        if (principal != null) {
+            UUID userId = UUID.fromString(principal.getName());
+            databaseNotificationService.deleteAll(userId);
+        }
+    }
+
 
     @EventListener
     public void handleSubscribeEvent(SessionSubscribeEvent event) {
