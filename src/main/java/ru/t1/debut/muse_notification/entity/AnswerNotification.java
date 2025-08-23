@@ -41,6 +41,7 @@ public class AnswerNotification {
     }
 
     public NotificationDTO toNotificationDTO() {
-        return new NotificationDTO(this.getId(), EventType.NEW_ANSWER_FOR_POST, this);
+        EventType eventType = this.forAuthor ? EventType.NEW_ANSWER_FOR_YOUR_POST : EventType.NEW_ANSWER_FOR_POST;
+        return new NotificationDTO(this.getId(), eventType, this);
     }
 }

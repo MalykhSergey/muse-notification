@@ -41,6 +41,7 @@ public class CommentNotification {
     }
 
     public NotificationDTO toNotificationDTO() {
-        return new NotificationDTO(this.getId(), EventType.NEW_POST_FOR_TAG, this);
+        EventType eventType = this.forAuthor ? EventType.NEW_COMMENT_FOR_YOUR_POST : EventType.NEW_COMMENT_FOR_POST;
+        return new NotificationDTO(this.getId(), eventType, this);
     }
 }
