@@ -26,7 +26,7 @@ postgres:
   user: notifications
 
 auth_server:
-  url:  http://keycloak.keycloak.svc.cluster.local:8080/realms/users-auth
+  url:  http://keycloak.keycloak.svc.cluster.local:8080
   realm: users-auth
   client: users-sync
 
