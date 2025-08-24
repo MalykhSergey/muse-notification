@@ -5,6 +5,11 @@ metadata:
 data:
   DB_USER: {{ .Values.postgres.user | quote }}
   DB_URL: {{ .Values.postgres.url | quote }}
-  ISSUER_URI: {{ .Values.issuer.uri | quote }}
+  AUTH_SERVER_URL: {{ .Values.issuer.uri | quote }}
+  AUTH_REALM: {{ .Values.issuer.realm | quote }}
+  AUTH_CLIENT: {{ .Values.issuer.client | quote }}
   SPRING_KAFKA_BOOTSTRAP-SERVERS: {{ .Values.kafka.boostrapServers | quote }}
   NOTIFICATIONS-TOPIC: {{ .Values.kafka.topic | quote }}
+  SMTP_HOST: {{ .Values.smtp.host | quote }}
+  SMTP_PORT: {{ .Values.smtp.port | quote }}
+  MAIL_USER: {{ .Values.smtp.user | quote }}

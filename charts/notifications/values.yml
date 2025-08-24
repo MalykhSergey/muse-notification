@@ -14,9 +14,9 @@ kafka:
   boostrapServers: kafka.kafka.svc.cluster.local:9092
   topic: notifications
 
-service:
-  type: ClusterIP
-  port: 81
+smtp:
+  host: smtp.gmail.com
+  port: 587
 
 postgres:
   host: notifications-pg-postgresql.notifications.svc.cluster.local
@@ -25,8 +25,14 @@ postgres:
   url: notifications-pg-postgresql.notifications.svc.cluster.local:5432/notifications
   user: notifications
 
-issuer:
-  uri:  http://keycloak.keycloak.svc.cluster.local:8080/realms/users-auth
+auth_server:
+  url:  http://keycloak.keycloak.svc.cluster.local:8080/realms/users-auth
+  realm: users-auth
+  client: users-sync
+
+service:
+  type: ClusterIP
+  port: 81
 
 resources: {}
 
