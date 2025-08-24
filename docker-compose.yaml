@@ -6,7 +6,7 @@ services:
       - postgres-notification
     environment:
       DB_URL: postgres-notification:5432/notifications
-      ISSUER_URI: http://keycloak:8080/realms/users-auth
+      AUTH_SERVER_URL: http://keycloak:8080
       SPRING_KAFKA_BOOTSTRAP-SERVERS: broker:29092
       NOTIFICATIONS-TOPIC: notifications
     volumes:

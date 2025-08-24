@@ -15,9 +15,22 @@ spring:
     out-of-order: false
   security:
     oauth2:
+      url: ${AUTH_SERVER_URL:http://localhost:8080}
+      realm: ${AUTH_REALM:users-auth}
+      client:
+        registration:
+          keycloak-admin:
+            provider: keycloak
+            realm: ${spring.security.oauth2.realm}
+            client-id: ${AUTH_CLIENT:users-sync}
+            client-secret: ${AUTH_CLIENT_SECRET:M11QUhkCuD5CXu72wtvql9eBDbgQbPZM}
+            authorization-grant-type: client_credentials
+        provider:
+          keycloak:
+            token-uri: ${spring.security.oauth2.url}/realms/${spring.security.oauth2.realm}/protocol/openid-connect/token
       resourceserver:
         jwt:
-          issuer-uri: ${ISSUER_URI:http://localhost:8080/realms/users-auth}
+          issuer-uri: ${spring.security.oauth2.url}/realms/${spring.security.oauth2.realm}
   kafka:
     bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP-SERVERS:localhost:9092}
     notifications-topic: ${NOTIFICATIONS-TOPIC:notifications}
@@ -27,9 +40,21 @@ spring:
       enable-auto-commit: false
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  mail:
+    host: ${SMTP_HOST:smtp.gmail.com}
+    port: ${SMTP_PORT:587}
+    username: ${MAIL_USER:tdfyhujosfj@gmail.com}
+    password: ${MAIL_PASSWORD:btcf dsbz agmm fjjx}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   messages:
     basename: messages
 server:
+  site_url: ${SITE_URL:https://muse.innoca.local}
   servlet:
     context-path: /api/notifications
   port: ${SERVER_PORT:81}
