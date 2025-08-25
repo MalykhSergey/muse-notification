@@ -30,11 +30,8 @@ public class TagPostNotification {
     @Column(name = "tagName", nullable = false)
     private String tagName;
 
-    public TagPostNotification(UUID userId, Long postId, String tagName) {
-        this.userId = userId;
-        this.postId = postId;
-        this.tagName = tagName;
-    }
+    @Column
+    private String description;
 
     public NotificationDTO toNotificationDTO() {
         return new NotificationDTO(this.getId(), EventType.NEW_POST_FOR_TAG, this);

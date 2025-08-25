@@ -15,4 +15,5 @@ public class EventMessage {
     private EventType eventType;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Set<UUID> usersUUID;
+    private String description;
 }

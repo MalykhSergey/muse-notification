@@ -33,12 +33,8 @@ public class AnswerNotification {
     @Column(name = "for_author", nullable = false)
     private Boolean forAuthor;
 
-    public AnswerNotification(UUID userId, Long parentId, Long answerId, Boolean forAuthor) {
-        this.userId = userId;
-        this.parentId = parentId;
-        this.answerId = answerId;
-        this.forAuthor = forAuthor;
-    }
+    @Column
+    private String description;
 
     public NotificationDTO toNotificationDTO() {
         EventType eventType = this.forAuthor ? EventType.NEW_ANSWER_FOR_YOUR_POST : EventType.NEW_ANSWER_FOR_POST;

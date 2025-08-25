@@ -41,10 +41,12 @@ public class KafkaConsumerService {
                             userService.ensureUser(userId);
                             boolean forAuthor = event.getEventType() == EventType.NEW_ANSWER_FOR_YOUR_POST;
                             AnswerNotification notification = new AnswerNotification(
+                                    null,
                                     userId,
                                     event.getParentId(),
                                     event.getAnswerId(),
-                                    forAuthor
+                                    forAuthor,
+                                    event.getDescription()
                             );
                             notifications.add(notification);
                         } catch (RuntimeException runtimeException) {
@@ -63,10 +65,12 @@ public class KafkaConsumerService {
                             userService.ensureUser(userId);
                             boolean forAuthor = commentEvent.getEventType() == EventType.NEW_COMMENT_FOR_YOUR_POST;
                             CommentNotification notification = new CommentNotification(
+                                    null,
                                     userId,
                                     commentEvent.getPostId(),
                                     commentEvent.getCommentId(),
-                                    forAuthor
+                                    forAuthor,
+                                    commentEvent.getDescription()
                             );
                             notifications.add(notification);
                         } catch (RuntimeException runtimeException) {
@@ -82,7 +86,7 @@ public class KafkaConsumerService {
                     for (UUID userId : postForTagEvent.getUsersUUID()) {
                         try {
                             userService.ensureUser(userId);
-                            TagPostNotification notification = new TagPostNotification(userId, postForTagEvent.getPostId(), postForTagEvent.getTagName());
+                            TagPostNotification notification = new TagPostNotification(null, userId, postForTagEvent.getPostId(), postForTagEvent.getTagName(), postForTagEvent.getDescription());
                             notifications.add(notification);
                         } catch (RuntimeException runtimeException) {
                             log.error("Error processing message: {}", message, runtimeException);

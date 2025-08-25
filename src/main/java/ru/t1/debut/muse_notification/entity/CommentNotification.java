@@ -33,12 +33,8 @@ public class CommentNotification {
     @Column(name = "for_author", nullable = false)
     private Boolean forAuthor;
 
-    public CommentNotification(UUID userId, Long postId, Long commentId, Boolean forAuthor) {
-        this.userId = userId;
-        this.postId = postId;
-        this.commentId = commentId;
-        this.forAuthor = forAuthor;
-    }
+    @Column
+    private String description;
 
     public NotificationDTO toNotificationDTO() {
         EventType eventType = this.forAuthor ? EventType.NEW_COMMENT_FOR_YOUR_POST : EventType.NEW_COMMENT_FOR_POST;
