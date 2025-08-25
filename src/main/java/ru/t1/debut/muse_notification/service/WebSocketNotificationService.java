@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ru.t1.debut.muse_notification.dto.NotificationDTO;
 import ru.t1.debut.muse_notification.entity.AnswerNotification;
 import ru.t1.debut.muse_notification.entity.CommentNotification;
+import ru.t1.debut.muse_notification.entity.ModerNotification;
 import ru.t1.debut.muse_notification.entity.TagPostNotification;
 
 import java.util.List;
@@ -34,6 +35,11 @@ public class WebSocketNotificationService implements NotificationService {
     @Override
     public void processCreatePostForTagNotifications(List<TagPostNotification> notifications) {
         notifications.forEach(notification -> messagingTemplate.convertAndSendToUser(notification.getUserId().toString(), "/queue/notifications", notification.toNotificationDTO()));
+    }
+
+    @Override
+    public void processModerNotification(ModerNotification notification) {
+        messagingTemplate.convertAndSendToUser(notification.getUserId().toString(), "/queue/notifications", notification.toNotificationDTO());
     }
 
     public void sendAllToUser(String userName, List<NotificationDTO> notifications) {

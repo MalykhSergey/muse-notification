@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import ru.t1.debut.muse_notification.dto.*;
 import ru.t1.debut.muse_notification.entity.AnswerNotification;
 import ru.t1.debut.muse_notification.entity.CommentNotification;
+import ru.t1.debut.muse_notification.entity.ModerNotification;
 import ru.t1.debut.muse_notification.entity.TagPostNotification;
 
 import java.util.ArrayList;
@@ -95,6 +96,22 @@ public class KafkaConsumerService {
                     notificationServiceList.forEach(service -> service.processCreatePostForTagNotifications(notifications));
                     break;
                 }
+                case MODERATOR_EDIT_YOUR_ANSWER:
+                case MODERATOR_EDIT_YOUR_COMMENT:
+                case MODERATOR_DELETE_YOUR_ANSWER:
+                case MODERATOR_EDIT_YOUR_QUESTION:
+                case MODERATOR_DELETE_YOUR_COMMENT:
+                case MODERATOR_DELETE_YOUR_QUESTION:
+                    ModeratorEvent moderatorEvent = objectMapper.readValue(message, ModeratorEvent.class);
+                    for (UUID userId : moderatorEvent.getUsersUUID()) {
+                        try {
+                            userService.ensureUser(userId);
+                            ModerNotification notification = new ModerNotification(null, userId, moderatorEvent.getEntityId(), moderatorEvent.getEventType(), moderatorEvent.getDescription());
+                            notificationServiceList.forEach(service -> service.processModerNotification(notification));
+                        } catch (RuntimeException runtimeException) {
+                            log.error("Error processing message: {}", message, runtimeException);
+                        }
+                    }
             }
         } catch (Exception e) {
             log.error("Error processing message: {}", message, e);

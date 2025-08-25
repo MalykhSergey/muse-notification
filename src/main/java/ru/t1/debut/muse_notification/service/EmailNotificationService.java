@@ -10,10 +10,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
-import ru.t1.debut.muse_notification.entity.AnswerNotification;
-import ru.t1.debut.muse_notification.entity.CommentNotification;
-import ru.t1.debut.muse_notification.entity.TagPostNotification;
-import ru.t1.debut.muse_notification.entity.User;
+import ru.t1.debut.muse_notification.entity.*;
 
 import java.util.List;
 import java.util.Map;
@@ -87,6 +84,66 @@ public class EmailNotificationService implements NotificationService {
                     "subject", subject
             ));
         }
+    }
+
+    @Override
+    public void processModerNotification(ModerNotification notification) {
+        Optional<User> user = userService.getUser(notification.getUserId());
+        if (user.isEmpty()) {
+            log.error("Send email error to: {}. User not exists!", notification.getUserId());
+            return;
+        }
+        String to = user.get().getEmail();
+        String link = null;
+
+        String subject = "Уведомление";
+        String entity = "пост";
+        String recipientText = "Уведомление";
+
+        switch (notification.getEventType()) {
+            case MODERATOR_EDIT_YOUR_QUESTION -> {
+                subject = "Модератор изменил ваш вопрос";
+                recipientText = String.format("Модератор изменил ваш вопрос: \"%s\".", notification.getDescription());
+                link = buildPostLink(notification.getEntityId());
+                entity = "вопрос";
+            }
+            case MODERATOR_EDIT_YOUR_ANSWER -> {
+                subject = "Модератор изменил ваш ответ";
+                recipientText = String.format("Модератор изменил ваш ответ: \"%s\".", notification.getDescription());
+                // временно
+                link = buildAnswerLink(null, notification.getEntityId());
+                entity = "ответ";
+            }
+            case MODERATOR_DELETE_YOUR_QUESTION -> {
+                subject = "Модератор удалил ваш вопрос";
+                recipientText = String.format("Модератор удалил ваш ответ: \"%s\".", notification.getDescription());
+                entity = "вопрос";
+            }
+            case MODERATOR_DELETE_YOUR_ANSWER -> {
+                subject = "Модератор удалил ваш ответ";
+                recipientText = String.format("Модератор удалил ваш ответ: \"%s\".", notification.getDescription());
+                entity = "ответ";
+            }
+            case MODERATOR_EDIT_YOUR_COMMENT -> {
+                subject = "Модератор изменил ваш комментарий";
+                recipientText = String.format("Модератор изменил ваш комментарий: \"%s\".", notification.getDescription());
+                link = buildCommentLink(notification.getEntityId());
+                entity = "комментарий";
+            }
+            case MODERATOR_DELETE_YOUR_COMMENT -> {
+                subject = "Модератор удалил ваш комментарий";
+                recipientText = String.format("Модератор удалил ваш комментарий: \"%s\".", notification.getDescription());
+                entity = "комментарий";
+            }
+        }
+
+        sendEmail(to, subject, "email/moder-notification", Map.of(
+                "link", link,
+                "recipientText", recipientText,
+                "entity", entity,
+                "subject", subject,
+                "header", subject
+        ));
     }
 
     @Override
