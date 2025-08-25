@@ -25,36 +25,29 @@ spec:
           command: ["mvn", "spring-boot:run"]
           ports:
             - containerPort: {{ .Values.service.port }}
+          envFrom:
+            - configMapRef:
+                name: notifications-config
           env:
-            - name: DB_USER
-              valueFrom:
-                configMapKeyRef:
-                  name: notifications-config
-                  key: DB_USER
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: notifications-postgres-password
                   key: password
-            - name: DB_URL
+            - name: AUTH_CLIENT_SECRET
               valueFrom:
-                configMapKeyRef:
-                  name: notifications-config
-                  key: DB_URL
-            - name: ISSUER_URI
+                secretKeyRef:
+                  name: notifications-creds
+                  key: client_secret
+            - name: MAIL_USERNAME
               valueFrom:
-                configMapKeyRef:
-                  name: notifications-config
-                  key: ISSUER_URI
-            - name: SPRING_KAFKA_BOOTSTRAP-SERVERS
+                secretKeyRef:
+                  name: notifications-creds
+                  key: mail_username
+            - name: MAIL_PASSWORD
               valueFrom:
-                configMapKeyRef:
-                  name: notifications-config
-                  key: SPRING_KAFKA_BOOTSTRAP-SERVERS
-            - name: NOTIFICATIONS-TOPIC
-              valueFrom:
-                configMapKeyRef:
-                  name: notifications-config
-                  key: NOTIFICATIONS-TOPIC
+                secretKeyRef:
+                  name: notifications-creds
+                  key: mail_password
           resources:
 {{ toYaml .Values.resources | indent 12 }}
