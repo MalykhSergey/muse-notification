@@ -10,15 +10,16 @@
         .content { font-size: 16px; color: #333333; line-height: 1.5; }
         .footer { margin-top: 20px; font-size: 12px; color: #666666; text-align: center; }
         a { color: #007acc; text-decoration: none; }
+        .tag { font-weight: bold; color: #007acc; }
     </style>
 </head>
 <body>
 <div class="container">
-    <div class="header">Новое ответное сообщение</div>
+    <div class="header">Новый вопрос с меткой</div>
     <div class="content">
-        Пользователь ответил на ваше сообщение.<br>
-        <strong>Ссылка на ответ:</strong>
-        <a th:href="${answerLink}" target="_blank">Перейти к ответу</a>
+        Новый вопрос с меткой, на которую вы подписаны: <span class="tag" th:text="${tagName}">Тег</span>.<br>
+        <strong>Ссылка на пост:</strong>
+        <a th:href="${postLink}" target="_blank">Перейти к посту</a>
     </div>
     <div class="footer">
         Сервис корпоративных обсуждений Муза

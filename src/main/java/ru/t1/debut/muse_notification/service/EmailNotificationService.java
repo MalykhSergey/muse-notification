@@ -45,8 +45,8 @@ public class EmailNotificationService implements NotificationService {
             String recipientText;
 
             if (notification.getForAuthor()) {
-                subject = "Новый ответ на ваш пост";
-                recipientText = "Пользователь ответил на ваш пост.";
+                subject = "Новый ответ на ваш вопрос";
+                recipientText = "Пользователь ответил на ваш вопрос.";
             } else {
                 subject = "Новый ответ в обсуждении, на которое вы подписаны";
                 recipientText = "Появился новый ответ в обсуждении, на которое вы подписаны.";
@@ -99,7 +99,7 @@ public class EmailNotificationService implements NotificationService {
             }
             String to = user.get().getEmail();
             String postLink = buildPostLink(notification.getPostId());
-            sendEmail(to, "Вы упомянуты в посте", "email/tag-post-notification", Map.of(
+            sendEmail(to, "Новый вопрос с меткой, на которую вы подписаны", "email/tag-post-notification", Map.of(
                     "postLink", postLink,
                     "tagName", notification.getTagName()
             ));
